@@ -1,12 +1,13 @@
 const formattedText = document.getElementById('text-output');
 document.getElementById('left-align').classList.add('active');
 
-let highlightedTextList = [];
+let startOfHighlighting, endOfHighlighting;
 
 
 // UPDATE #text-output whenever something is written in #text-input
 function updateText(){
   let [...text] = document.getElementById('text-input').value;
+  console.log(text);
   let outputSpans = "";
   for (let i = 0; i < text.length; i++) {
     outputSpans += `<span class="pos-${i}">${text[i]}</span>`
@@ -15,42 +16,33 @@ function updateText(){
 }
 
 
-function getIndicesOf(searchStr, str) {
-  let searchStrLen = searchStr.length;
-  if (searchStrLen == 0) {
-    return [];
-  }
-  let startIndex = 0, index, indices = []; 
-  while ((index = str.indexOf(searchStr, startIndex)) != -1) {
-    indices.push(index);
-    startIndex = index + searchStrLen;
-  }
-  return indices;
-}
 
 
 function makeBold(elem){
   elem.classList.toggle('active');
   
-  // get the existing text from #text-input text-area
-  const text = document.getElementById('text-input').value;
-  const highlightedText = highlightedTextList[highlightedTextList.length-1];
+  let boldClassExists, boldClassNonExists;
+  boldClassExists = boldClassNonExists = false;
   
-  let indices = getIndicesOf(highlightedText, text).length;
-
-  if (indices === 1) {
-    const highlightedTextStart = text.indexOf(highlightedText);
-    const highlightedTextEnd = highlightedTextStart + highlightedText.length;
-    for (let i = highlightedTextStart; i < highlightedTextEnd; i++) {
-      document.querySelector(`.pos-${i}`).classList.toggle('bold');
+  for (let i = startOfHighlighting; i < endOfHighlighting; i++) {
+    if (document.querySelector(`.pos-${i}`).classList.contains('bold')) {
+      boldClassExists = true;
+    } else {
+      boldClassNonExists = true;
     }
-  } else {
-    console.log(`There is multiple instances of "${highlightedText}"`);
+
   }
 
-  
+  if (boldClassExists && boldClassNonExists) {
+    for (let i = startOfHighlighting; i < endOfHighlighting; i++) {
+      document.querySelector(`.pos-${i}`).classList.add('bold');
+    }
+  } else {
+    for (let i = startOfHighlighting; i < endOfHighlighting; i++) {
+      document.querySelector(`.pos-${i}`).classList.toggle('bold');
+    }
+  }
 }
-
 
 function makeItalic(elem){
   elem.classList.toggle('active');
@@ -79,20 +71,31 @@ function alignText(elem, alignType){
 }
 
 
-function getSelectionText() {
-  var text = "";
+
+function getSelectionRange() {
+  let startOfHighlighting, endOfHighlighting;
   var activeEl = document.activeElement;
   var activeElTagName = activeEl ? activeEl.tagName.toLowerCase() : null;
   if (activeElTagName === "textarea") {
-    text = activeEl.value.slice(activeEl.selectionStart, activeEl.selectionEnd);
-    console.log(activeEl.selectionStart, activeEl.selectionEnd);
+    startOfHighlighting = activeEl.selectionStart;
+    endOfHighlighting = activeEl.selectionEnd;
   }
-  return text;
+  return [startOfHighlighting, endOfHighlighting];
 }
 
-document.getElementById('text-input').addEventListener("mouseup", function(){
-  let markedText = getSelectionText();
-  if (markedText != "") {
-    highlightedTextList.push(markedText);
-  }
+document.getElementById('text-input').addEventListener('mouseup', function() {
+  [startOfHighlighting, endOfHighlighting] = getSelectionRange(); 
 })
+
+// function getIndicesOf(searchStr, str) {
+//   let searchStrLen = searchStr.length;
+//   if (searchStrLen == 0) {
+//     return [];
+//   }
+//   let startIndex = 0, index, indices = []; 
+//   while ((index = str.indexOf(searchStr, startIndex)) != -1) {
+//     indices.push(index);
+//     startIndex = index + searchStrLen;
+//   }
+//   return indices;
+// }
