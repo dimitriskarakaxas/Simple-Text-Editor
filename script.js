@@ -15,24 +15,25 @@ function updateText(){
   formattedText.innerHTML = outputSpans;
 }
 
+function checkClassExistence(className) {
+  let classExists, classNonExists;
+  classExists = classNonExists = false;
 
-
-
-function makeBold(elem){
-  elem.classList.toggle('active');
-  
-  let boldClassExists, boldClassNonExists;
-  boldClassExists = boldClassNonExists = false;
-  
   for (let i = startOfHighlighting; i < endOfHighlighting; i++) {
-    if (document.querySelector(`.pos-${i}`).classList.contains('bold')) {
-      boldClassExists = true;
+    if (document.querySelector(`.pos-${i}`).classList.contains(`${className}`)) {
+      classExists = true;
     } else {
-      boldClassNonExists = true;
+      classNonExists = true;
     }
-
   }
+  console.log(classExists, classNonExists);
 
+  return [classExists, classNonExists];
+}
+
+
+function makeBold(elem){ 
+  let [boldClassExists, boldClassNonExists] = checkClassExistence("bold");
   if (boldClassExists && boldClassNonExists) {
     for (let i = startOfHighlighting; i < endOfHighlighting; i++) {
       document.querySelector(`.pos-${i}`).classList.add('bold');
@@ -45,8 +46,16 @@ function makeBold(elem){
 }
 
 function makeItalic(elem){
-  elem.classList.toggle('active');
-  formattedText.classList.toggle('italic');
+  let [italicClassExists, italicClassNonExists] = checkClassExistence("italic");
+  if (italicClassExists && italicClassNonExists) {
+    for (let i = startOfHighlighting; i < endOfHighlighting; i++) {
+      document.querySelector(`.pos-${i}`).classList.add('italic');
+    }
+  } else {
+    for (let i = startOfHighlighting; i < endOfHighlighting; i++) {
+      document.querySelector(`.pos-${i}`).classList.toggle('italic');
+    }
+  }
 }
 
 
@@ -98,4 +107,4 @@ document.getElementById('text-input').addEventListener('mouseup', function() {
 //     startIndex = index + searchStrLen;
 //   }
 //   return indices;
-// }
+  // 
