@@ -27,7 +27,7 @@ function checkClassExistence(className) {
     }
   }
   console.log(classExists, classNonExists);
-
+  
   return [classExists, classNonExists];
 }
 
@@ -60,11 +60,15 @@ function makeItalic(elem){
 
 
 function makeUnderline(elem){
-  elem.classList.toggle('active');
-  if (formattedText.classList.contains('underline')) {
-    formattedText.classList.remove('underline');
+  let [underlineClassExists, underlineClassNonExists] = checkClassExistence("underline");
+  if (underlineClassExists && underlineClassNonExists) {
+    for (let i = startOfHighlighting; i < endOfHighlighting; i++) {
+      document.querySelector(`.pos-${i}`).classList.add('underline');
+    }
   } else {
-    formattedText.classList.add('underline');
+    for (let i = startOfHighlighting; i < endOfHighlighting; i++) {
+      document.querySelector(`.pos-${i}`).classList.toggle('underline');
+    }
   }
 }
 
