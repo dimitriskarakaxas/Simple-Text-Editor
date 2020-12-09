@@ -99,16 +99,3 @@ function getSelectionRange() {
 document.getElementById('text-input').addEventListener('mouseup', function() {
   [startOfHighlighting, endOfHighlighting] = getSelectionRange(); 
 })
-
-// function getIndicesOf(searchStr, str) {
-//   let searchStrLen = searchStr.length;
-//   if (searchStrLen == 0) {
-//     return [];
-//   }
-//   let startIndex = 0, index, indices = []; 
-//   while ((index = str.indexOf(searchStr, startIndex)) != -1) {
-//     indices.push(index);
-//     startIndex = index + searchStrLen;
-//   }
-//   return indices;
-  // 
