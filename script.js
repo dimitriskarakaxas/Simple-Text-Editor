@@ -5,7 +5,7 @@ let startOfHighlighting, endOfHighlighting;
 
 
 // UPDATE #text-output whenever something is written in #text-input
-function updateText(){
+updateText = () => {
   let [...text] = document.getElementById('text-input').value;
   console.log(text);
   let outputSpans = "";
@@ -15,7 +15,7 @@ function updateText(){
   formattedText.innerHTML = outputSpans;
 }
 
-function checkClassExistence(className) {
+checkClassExistence = (className) => {
   let classExists, classNonExists;
   classExists = classNonExists = false;
 
@@ -32,7 +32,7 @@ function checkClassExistence(className) {
 }
 
 
-function makeBold(elem){ 
+makeBold = (elem) => { 
   let [boldClassExists, boldClassNonExists] = checkClassExistence("bold");
   if (boldClassExists && boldClassNonExists) {
     for (let i = startOfHighlighting; i < endOfHighlighting; i++) {
@@ -45,7 +45,7 @@ function makeBold(elem){
   }
 }
 
-function makeItalic(elem){
+makeItalic = (elem) => {
   let [italicClassExists, italicClassNonExists] = checkClassExistence("italic");
   if (italicClassExists && italicClassNonExists) {
     for (let i = startOfHighlighting; i < endOfHighlighting; i++) {
@@ -59,7 +59,7 @@ function makeItalic(elem){
 }
 
 
-function makeUnderline(elem){
+makeUnderline = (elem) => {
   let [underlineClassExists, underlineClassNonExists] = checkClassExistence("underline");
   if (underlineClassExists && underlineClassNonExists) {
     for (let i = startOfHighlighting; i < endOfHighlighting; i++) {
@@ -73,11 +73,11 @@ function makeUnderline(elem){
 }
 
 
-function alignText(elem, alignType){
+alignText = (elem, alignType) => {
   formattedText.style.textAlign = alignType; // Style input
   
   let buttonList = document.getElementsByClassName('align'); // Style buttons
-  for (let i = 0; i < buttonList.length; i++) {
+  for (button of buttonList) {
     buttonList[i].classList.remove('active');
   }
   elem.classList.add('active');
@@ -85,7 +85,7 @@ function alignText(elem, alignType){
 
 
 
-function getSelectionRange() {
+getSelectionRange = () => {
   let startOfHighlighting, endOfHighlighting;
   var activeEl = document.activeElement;
   var activeElTagName = activeEl ? activeEl.tagName.toLowerCase() : null;
